@@ -1,0 +1,93 @@
+#include <Servo.h>
+
+int Total= 5;         // INITIALISING THE VARIABLES
+int Space = Total;
+
+int Entry = 2;  // DECLARING PIN NO. FOR ENTRY SENSOR
+int Exit = 4;   // DECLARING PIN NO. FOR EXIT SENSOR
+
+Servo Barricade ;    // DECLARING A NAME FOR SERVO MOTOR
+
+ 
+
+void setup()
+{
+  pinMode(Entry, INPUT);    // DECLARING PIN MODES FOR SENSORS
+  pinMode(Exit, INPUT);
+  
+  Barricade.attach(3);       // DECLARING PIN NO. FOR SERVO MOTOR
+  Barricade.write(90);        // INITIALLY SETTING THE SERVO MOTOR TO 90 DEGREES ( OPEN )
+
+  Serial.begin(9600);
+  Serial.print(" SMART PARKING SYSTEM ");
+  Serial.print(" \n");
+  delay (1000);
+}
+
+void loop()
+{
+
+  if (digitalRead(Entry)==LOW)    // DETECTING ENTERING VEHICLE
+   {
+     
+     if (Space>0)              // CHECKING FOR SPACE
+     {
+      Serial.print("TOTAL SPACE ");
+      Serial.print(Total);
+      Serial.print(" \n");
+
+      Serial.print("AVAILABLE SPACE ");
+      Serial.print(Space);
+      Serial.print(" \n");
+
+
+      Barricade.write(0);  // OPENING THE BARRICADE
+      delay(2000); 
+      Barricade.write(90);  // CLOSING THE BARRICADE
+      Space = Space - 1;   // DECREASING THE SPACE
+      delay(2000);
+
+      Serial.print("TOTAL SPACE ");
+      Serial.print(Total);
+      Serial.print(" \n");
+
+      Serial.print("AVAILABLE SPACE ");
+      Serial.print(Space);
+      Serial.print(" \n");
+
+     }
+
+     else
+     {
+      Serial.print(" SORRY ! NO SPACE FOR PARKING ");
+      Serial.print(" \n");
+      delay(1000);
+     }
+   }
+
+  if (digitalRead(Exit)==LOW)  // CHECKING FOR A LEAVING VEHICLE
+  {
+      Space = Space + 1 ;   // INCREASING THE SPACE
+    
+      Serial.print("TOTAL SPACE ");
+      Serial.print(Total);
+      Serial.print(" \n");
+
+      Serial.print("AVAILABLE SPACE ");
+      Serial.print(Space);             
+     
+      delay(1000); 
+ 
+  }
+  }
+
+
+
+
+
+
+
+
+
+
+
